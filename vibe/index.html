@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>One Piece — Grand Line</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts: Pirata One (display) + Poppins (body) -->
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Pirata+One&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+  </style>
+
+  <!-- Tailwind Config -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'op-red':    '#C8472C',
+            'op-brown':  '#412A1E',
+            'op-yellow': '#F8DE3C',
+            'op-white':  '#FEFEFE',
+            'op-sky':    '#58ACF4',
+            'op-blue':   '#105EDD',
+            'op-navy':   '#0B3075',
+          },
+          fontFamily: {
+            display: ['"Pirata One"', 'cursive'],
+            body:    ['"Poppins"', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* ═══════════════════ BASE ═══════════════════ */
+    html { scroll-behavior: smooth; }
+    body { overflow-x: hidden; }
+
+    /* ═══════════════════ HERO ENTRANCE ═══════════════════ */
+    .hero-enter {
+      opacity: 0;
+      transform: translateY(40px);
+      animation: heroFadeIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .hero-enter.d1 { animation-delay: 0.3s; }
+    .hero-enter.d2 { animation-delay: 0.6s; }
+    .hero-enter.d3 { animation-delay: 0.9s; }
+
+    @keyframes heroFadeIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ═══════════════════ SCROLL REVEAL ═══════════════════ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(60px);
+      transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal-left {
+      opacity: 0;
+      transform: translateX(-80px);
+      transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal-right {
+      opacity: 0;
+      transform: translateX(80px);
+      transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal-scale {
+      opacity: 0;
+      transform: scale(0.92);
+      transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .reveal.visible,
+    .reveal-left.visible,
+    .reveal-right.visible,
+    .reveal-scale.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* Stagger delays */
+    .sd1 { transition-delay: 0.15s; }
+    .sd2 { transition-delay: 0.3s; }
+    .sd3 { transition-delay: 0.45s; }
+
+    /* ═══════════════════ SCROLL IMAGE REVEAL ═══════════════════ */
+    .image-reveal {
+      will-change: clip-path;
+      transition: clip-path 0.05s linear;
+    }
+    .image-reveal[data-reveal="left"] {
+      clip-path: polygon(100% 0, 100% 0, 100% 100%, 100% 100%);
+    }
+    .image-reveal[data-reveal="right"] {
+      clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
+    }
+
+    /* ═══════════════════ CTA UNDERLINE ═══════════════════ */
+    .cta-link {
+      position: relative;
+      text-decoration: none;
+    }
+    .cta-link::after {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: currentColor;
+      transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .cta-link:hover::after {
+      width: 100%;
+    }
+
+    /* ═══════════════════ IMAGE PLACEHOLDER ═══════════════════ */
+    .img-placeholder {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      min-height: 100%;
+    }
+    .img-placeholder span {
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      opacity: 0.35;
+      text-align: center;
+      padding: 1rem;
+    }
+
+    /* ═══════════════════ ACCESSIBILITY ═══════════════════ */
+    @media (prefers-reduced-motion: reduce) {
+      .reveal, .reveal-left, .reveal-right, .reveal-scale {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+      .hero-enter {
+        opacity: 1;
+        transform: none;
+        animation: none;
+      }
+    }
+
+    /* ═══════════════════ RESPONSIVE ═══════════════════ */
+    @media (max-width: 768px) {
+      .mobile-stack { grid-template-columns: 1fr !important; }
+      .mobile-stack > * { min-height: 50vh !important; }
+
+      .mobile-full { width: 100% !important; }
+      .mobile-order-first { order: -1; }
+
+      .image-reveal { clip-path: none !important; }
+
+      .hero-bottom { left: 1.5rem !important; right: 1.5rem; }
+      .nav-pad { padding-left: 1.5rem !important; padding-right: 1.5rem !important; }
+    }
+  </style>
+</head>
+
+<body class="font-body bg-op-navy text-op-white">
+
+  <!-- ═══════════════════ NAVIGATION ═══════════════════ -->
+  <nav class="nav-pad fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-10 py-6"
+       style="mix-blend-mode: difference;">
+    <span class="text-sm font-semibold tracking-[0.15em] uppercase text-op-white select-none">
+      One Piece
+    </span>
+    <span class="text-sm font-normal tracking-wider text-op-white cursor-pointer hover:opacity-70 transition-opacity">
+      Menu
+    </span>
+  </nav>
+
+
+  <!-- ═══════════════════ SECTION 1 — HERO ═══════════════════ -->
+  <section class="relative w-full h-screen overflow-hidden">
+    <!-- Background (replace gradient with background-image) -->
+    <div class="hero-bg absolute inset-0 bg-cover bg-center"
+         style="background-image: url('./img/luffy\ hero.jpg'); background-size: cover; background-position: center;">
+      <!-- 🔄 Para adicionar imagem: style="background-image: url('sua-imagem.jpg'); background-size: cover; background-position: center;" -->
+    </div>
+
+    <!-- Dark overlay -->
+    <div class="absolute inset-0 bg-gradient-to-t from-op-navy/70 via-black/20 to-transparent"></div>
+
+    <!-- Hero text -->
+    <div class="hero-bottom absolute bottom-[8%] left-10 max-w-[720px]">
+      <h1 class="font-display font-light text-op-white leading-[1.05] hero-enter"
+          style="font-size: clamp(3rem, 7vw, 5.5rem);">
+        Navegue rumo à <em>Grand Line</em>
+      </h1>
+      <p class="mt-5 text-base leading-relaxed max-w-[420px] text-op-white/85 hero-enter d1">
+        A maior aventura pirata de todos os tempos. Um tesouro lendário espera no fim do mundo.
+      </p>
+      <a href="#galeria" class="cta-link inline-block mt-6 text-[0.9rem] font-medium tracking-wide text-op-white hero-enter d2">
+        Explorar →
+      </a>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 hero-enter d3">
+      <div class="w-px h-10 bg-op-white/30 animate-pulse"></div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════ SECTION 2 — GALLERY ═══════════════════ -->
+  <section id="galeria" class="mobile-stack grid grid-cols-2 w-full" style="min-height: 100vh;">
+    <!-- Image Left -->
+    <div class="relative overflow-hidden reveal-scale" style="min-height: 100vh;">
+      <div class="img-placeholder bg-gradient-to-br from-op-red to-op-brown text-op-white">
+        <!-- 🔄 Substituir com: <img src="..." alt="..." class="w-full h-full object-cover"> -->
+         <img src="./img/images.jpg" alt="..." class="w-full h-full object-cover">
+        <!-- <span>Imagem 1 — Adicionar posteriormente</span> -->
+      </div>
+    </div>
+    <!-- Image Right -->
+    <div class="relative overflow-hidden reveal-scale sd1" style="min-height: 100vh;">
+      <div class="img-placeholder bg-gradient-to-bl from-op-blue to-op-navy text-op-white">
+        <!-- 🔄 Substituir com: <img src="..." alt="..." class="w-full h-full object-cover"> -->
+        <img src="./img/capa2.jpg" alt="..." class="w-full h-full object-cover">
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════ SECTION 3 — AKUMA NO MI ═══════════════════ -->
+  <section class="relative w-full overflow-hidden" style="min-height: 100vh;">
+    <!-- Yellow background layer (full width — image reveals on scroll) -->
+    <div class="absolute inset-0 bg-op-yellow"></div>
+
+    <!-- Image with scroll-driven reveal -->
+    <div class="mobile-full absolute inset-y-0 right-0 image-reveal"
+         data-reveal="left" style="width: 65%;">
+      <div class="img-placeholder bg-gradient-to-br from-op-yellow via-op-red to-op-brown text-op-white">
+        <!-- 🔄 Substituir com: <img src="..." alt="..." class="w-full h-full object-cover"> -->
+        <img src="./img/Fruta_do_Diabo_Infobox.webp" alt="..." class="w-full h-full object-cover">
+      </div>
+    </div>
+
+    <!-- Text content -->
+    <div class="mobile-full relative z-10 flex flex-col py-16 px-12" style="width: 42%; min-height: 100vh;">
+      <div class="flex-1 flex items-center">
+        <h2 class="font-display font-light text-op-navy leading-[1.1] reveal-left"
+            style="font-size: clamp(2.5rem, 5.5vw, 4.5rem);">
+          As Akuma no <em>Mi</em>
+        </h2>
+      </div>
+      <a href="#" class="cta-link text-[0.9rem] font-medium tracking-wide text-op-navy reveal-left sd1">
+        Descobrir →
+      </a>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════ SECTION 4 — A TRIPULAÇÃO ═══════════════════ -->
+  <section class="relative w-full overflow-hidden" style="min-height: 100vh;">
+    <!-- Light blue background layer (full width — image reveals on scroll) -->
+    <div class="absolute inset-0 bg-op-sky"></div>
+
+    <!-- Image with scroll-driven reveal -->
+    <div class="mobile-full absolute inset-y-0 left-0 image-reveal"
+         data-reveal="right" style="width: 65%;">
+      <div class="img-placeholder bg-gradient-to-bl from-op-sky via-op-blue to-op-navy text-op-white">
+        <!-- 🔄 Substituir com: <img src="..." alt="..." class="w-full h-full object-cover"> -->
+        <img src="./img/399.jpg" alt="..." class="w-full h-full object-cover">
+      </div>
+    </div>
+
+    <!-- Text content -->
+    <div class="mobile-full relative z-10 flex flex-col py-16 px-12 ml-auto" style="width: 42%; min-height: 100vh;">
+      <div class="flex-1 flex items-center">
+        <h2 class="font-display font-light text-op-navy leading-[1.1] reveal-right"
+            style="font-size: clamp(2.5rem, 5.5vw, 4.5rem);">
+          A <em>Tripulação</em>
+        </h2>
+      </div>
+      <a href="#" class="cta-link text-[0.9rem] font-medium tracking-wide text-op-navy reveal-right sd1">
+        Sobre nós →
+      </a>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════ FOOTER ═══════════════════ -->
+  <footer class="bg-op-brown py-16 px-10 text-center">
+    <p class="font-display font-light text-op-white/50 italic"
+       style="font-size: clamp(1.5rem, 3vw, 2.5rem);">
+      "Eu vou ser o Rei dos Piratas!"
+    </p>
+    <p class="mt-6 text-xs tracking-[0.2em] uppercase text-op-white/25">
+      One Piece Fan Page — 2026
+    </p>
+  </footer>
+
+
+  <!-- ═══════════════════ SCRIPTS ═══════════════════ -->
+  <script>
+    /* ── Scroll Reveal (IntersectionObserver) ── */
+    const observerOpts = {
+      threshold: 0.15,
+      rootMargin: '0px 0px -60px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, observerOpts);
+
+    document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale')
+      .forEach(el => observer.observe(el));
+
+    /* ── Hero Parallax + Image Reveal on Scroll ── */
+    function lerp(a, b, t) { return a + (b - a) * t; }
+
+    function updateScrollEffects() {
+      const scrollY = window.scrollY;
+      const vh = window.innerHeight;
+
+      /* Parallax hero */
+      const heroBg = document.querySelector('.hero-bg');
+      if (heroBg) {
+        heroBg.style.transform = `translateY(${scrollY * 0.3}px) scale(1.05)`;
+      }
+
+      /* Scroll-driven image reveal for split sections */
+      document.querySelectorAll('.image-reveal').forEach(el => {
+        const section = el.closest('section');
+        if (!section) return;
+        const rect = section.getBoundingClientRect();
+
+        // progress: 0 when section top hits viewport bottom, 1 when 60% visible
+        const progress = Math.max(0, Math.min(1, (vh - rect.top) / (vh * 0.6)));
+        const type = el.dataset.reveal;
+
+        if (type === 'left') {
+          // Image on the RIGHT — reveals from right edge toward left (diagonal)
+          const p1x = lerp(100, 20, progress);
+          const p4x = lerp(100, 5, progress);
+          el.style.clipPath = `polygon(${p1x}% 0, 100% 0, 100% 100%, ${p4x}% 100%)`;
+        } else if (type === 'right') {
+          // Image on the LEFT — reveals from left edge toward right (diagonal)
+          const p2x = lerp(0, 95, progress);
+          const p3x = lerp(0, 80, progress);
+          el.style.clipPath = `polygon(0 0, ${p2x}% 0, ${p3x}% 100%, 0 100%)`;
+        }
+      });
+    }
+
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          updateScrollEffects();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
+
+    // Run once on load to set initial state
+    updateScrollEffects();
+  </script>
+
+</body>
+</html>
